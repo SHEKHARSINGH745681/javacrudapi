@@ -1,6 +1,9 @@
 
 package com.example.shekhar.javacrudapi;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @RestController
 public class JavacrudapiApplication {
+	List<UserData> data = new ArrayList<>();
+	int index = 0;
 
 	public static void main(String[] args) {
 		SpringApplication.run(JavacrudapiApplication.class, args);
@@ -22,13 +27,32 @@ public class JavacrudapiApplication {
 
 	@GetMapping(value = "/userDetail", produces = "application/json")
 	public ResponseData userDetail() {
-		UserData[] data = new UserData[3];
-
-		data[0] = new UserData(1, "Shekhar singh", "Shekharsingh@gmail.com");
-		data[1] = new UserData(2, "shekharsingh", "Shekharsingh@gmail.com");
-		data[2] = new UserData(3, "Sandeep bhaiya", "Sandeepbhaiya@gmail.com");
 		ResponseData resData = new ResponseData(200, 1, "Successfull", data);
 		return resData;
+	}
+
+	@GetMapping(value = "/userAdd", produces = "application/json")
+	public String userAdd() {
+		index = index + 1;
+		data.add(new UserData(index, "Static Name", "staticemail@gmail.com"));
+
+		return "User Added Successfully Static !!!!!!!!";
+	}
+	@GetMapping(value = "/userAdd2", produces = "application/json")
+	public String userAdd2(@RequestParam String name,@RequestParam String email) {
+		index = index + 1;
+		data.add(new UserData(index, name, email));
+
+		return "User Added Successfully Dynamic !!!!!!!!";
+	}
+	
+	@PostMapping(value = "/userAdd3", produces = "application/json")
+	// TODO: 15042024
+	public String userAdd3() {
+		index = index + 1;
+		data.add(new UserData(index, "name", "email"));
+
+		return "User Added Successfully Dynamic !!!!!!!!";
 	}
 
 	@PostMapping(value = "/saveUser")
@@ -59,9 +83,9 @@ class ResponseData {
 	public int code;
 	public int status;
 	public String message;
-	public UserData[] data;
+	public List<UserData> data;
 
-	ResponseData(int code, int status, String message, UserData[] data) {
+	ResponseData(int code, int status, String message, List<UserData> data) {
 		this.code = code;
 		this.status = status;
 		this.message = message;
