@@ -48,21 +48,14 @@ public class JavacrudapiApplication {
 	
 	@PostMapping(value = "/userAdd3", produces = "application/json")
 	// TODO: 15042024
-	public String userAdd3() {
+	public String userAdd3(@RequestBody String reqBody) {
 		index = index + 1;
-		data.add(new UserData(index, "name", "email"));
-
-		return "User Added Successfully Dynamic !!!!!!!!";
+		data.add(new UserData(index, reqBody, reqBody));
+		return "User Added Successfully   !!  ";
 	}
 
-	@PostMapping(value = "/saveUser")
-	public String saveUser(@RequestBody String reqBody) {
-		System.out.println("-----------------------------");
-		System.out.println(reqBody);
-		return "User Saved Sucessfully";
-
+	
 	}
-}
 
 //Model Class Writing Here 
 class UserData {
