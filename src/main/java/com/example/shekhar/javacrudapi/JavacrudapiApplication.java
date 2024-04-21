@@ -5,16 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+@EnableAutoConfiguration
 @SpringBootApplication
 @RestController
 public class JavacrudapiApplication {
@@ -38,24 +42,48 @@ public class JavacrudapiApplication {
 
 		return "User Added Successfully Static !!!!!!!!";
 	}
+
 	@GetMapping(value = "/userAdd2", produces = "application/json")
-	public String userAdd2(@RequestParam String name,@RequestParam String email) {
+	public String userAdd2(@RequestParam String name, @RequestParam String email) {
 		index = index + 1;
 		data.add(new UserData(index, name, email));
 
 		return "User Added Successfully Dynamic !!!!!!!!";
 	}
-	
+
+	////////// POST METHOD
+
 	@PostMapping(value = "/userAdd3", produces = "application/json")
 	// TODO: 15042024
-	public String userAdd3(@RequestBody String reqBody) {
+	public String userAdd3(@RequestBody requestuser requestuser) {
 		index = index + 1;
-		data.add(new UserData(index, reqBody, reqBody));
+		data.add(new UserData(index, requestuser.name, requestuser.email));
+
 		return "User Added Successfully   !!  ";
 	}
 
+
+
+/////////// DELETE METHOD
+
+//@DeleteMapping(value = "/delete/{id}")
+//public String deleteuser(@PathVariable Integer id) {
+	//data.add(new UserData(index, null));
+//}
+
+/////////// UPDATE METHOD
+@PutMapping(value ="/update/{id}")
+public String updateuser(@PathVariable updateuser updateuser) {
+	data.add(new UserData(index, updateuser.name, updateuser.email));
+
+	return "User Update Successfully   !!  ";
+}
+
+}
 	
-	}
+
+     
+
 
 //Model Class Writing Here 
 class UserData {
@@ -69,6 +97,10 @@ class UserData {
 		this.name = name;
 		this.email = email;
 
+	}
+
+	public UserData(int index, requestuser requestuser) {
+		// TODO Auto-generated constructor stub
 	}
 }
 
@@ -91,6 +123,40 @@ class RequestSaveUser {
 	public String email;
 
 	RequestSaveUser(String name, String email) {
+		this.name = name;
+		this.email = email;
+	}
+
+}
+
+class requestuser {
+	public String name;
+	public String email;
+
+	requestuser(String name, String email) {
+		this.name = name;
+		this.email = email;
+	}
+
+}
+
+
+class requestdeleteuser{
+	public int id;
+	
+	requestdeleteuser(int id){
+		this.id = id;
+	}
+}
+
+
+/////upadteuserclass
+ 
+class updateuser {
+	public String name;
+	public String email;
+
+	updateuser(String name, String email) {
 		this.name = name;
 		this.email = email;
 	}
